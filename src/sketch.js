@@ -10,6 +10,9 @@ const svgStrRaw = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><
 const svgStrBase64 = window.btoa(svgStrRaw)
 const svgDataUri = `data:image/svg+xml;base64,${svgStrBase64}`
 
+const aavegotchiPreview = document.getElementById('aavegotchi-preview')
+aavegotchiPreview.src = svgDataUri
+
 const loadImgFn = () => {
   img = window.loadImage(svgDataUri)
   console.log('image loaded', img)
