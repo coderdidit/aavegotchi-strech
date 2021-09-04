@@ -38,6 +38,8 @@ const setupPlayerSVG = async () => {
   return svgDataUri
 }
 
+let score = 0;
+
 const setupSketch = async () => {
   const svgDataUri = await setupPlayerSVG()
   const canvasParent = document.getElementById('main-canvas')
@@ -72,6 +74,8 @@ const setupSketch = async () => {
       // if top was reached
       if (this.y < 0) {
         // trigger confetti
+        score += 1
+        document.getElementById('user-score').innerHTML = score
         party.confetti(canvasParent)
         // reset to beginning
         this.y = getHeight() - 50;
