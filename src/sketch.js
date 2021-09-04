@@ -39,7 +39,7 @@ const setupPlayerSVG = async () => {
 }
 
 const setupSketch = async () => {
-  // const svgDataUri = await setupPlayerSVG()
+  const svgDataUri = await setupPlayerSVG()
   const canvasParent = document.getElementById('main-canvas')
 
   let img;
@@ -51,7 +51,7 @@ const setupSketch = async () => {
   }
 
   window.preload = () => {
-    // loadImgFn()
+    loadImgFn()
   }
 
   class Ball {
