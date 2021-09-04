@@ -23,7 +23,7 @@ const renderTraits = () => {
   const gotchiTraitsDiv = document.getElementById('gotchi-traits')
   const numericTraitsNames = ['⚡️ Energy', '👹 Aggression', '👻 Spookiness', '🧠 Brain size']
   let traits = ''
-  const numericTraitsMap = numericTraits.slice(0, 4).forEach((_, i) => {
+  numericTraits.slice(0, 4).forEach((_, i) => {
     traits += `<li class="list-group-item"><span>${numericTraitsNames[i]}</span> <span>${i}</span></li>`
   })
   gotchiTraitsDiv.innerHTML = `<ul class="list-group">${traits}</ul>`
