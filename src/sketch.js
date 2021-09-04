@@ -39,7 +39,7 @@ const setupPlayerSVG = async () => {
 }
 
 const setupSketch = async () => {
-  const svgDataUri = await setupPlayerSVG()
+  // const svgDataUri = await setupPlayerSVG()
   const canvasParent = document.getElementById('main-canvas')
 
   let img;
@@ -51,7 +51,7 @@ const setupSketch = async () => {
   }
 
   window.preload = () => {
-    loadImgFn()
+    // loadImgFn()
   }
 
   class Ball {
@@ -83,10 +83,13 @@ const setupSketch = async () => {
     return height - 25
   }
 
+  const w = window.innerWidth / 1.3
+  const h = window.innerHeight / 1.3
+
   function drawLadder() {
     fill(81, 1, 176);
     const rectWidth = 80
-    rect((window.innerWidth / 2) - rectWidth / 2, 0, 80, window.innerHeight - 90);
+    rect((w / 2) - rectWidth / 2, 0, 80, h - 90);
   }
 
   function drawBackground() {
@@ -99,11 +102,11 @@ const setupSketch = async () => {
   // needs to be defined in window for bundler
   window.setup = () => {
     console.log('setup p5js sketch')
-    var sketchCanvas = createCanvas(window.innerWidth, window.innerHeight - 90);
+    const sketchCanvas = createCanvas(w, h - 90);
     sketchCanvas.parent("main-canvas");
 
     // init ball
-    let x = (window.innerWidth / 2) - (gotchiSize / 2);
+    let x = (w / 2) - (gotchiSize / 2);
     let y = getHeight() - 9;
     ball = new Ball(x, y)
   }

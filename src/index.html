@@ -34,7 +34,10 @@
       </div>
     </div>
   </nav>
-  <div id="welcom-bg" class="container-fluid">
+  <div class="container-fluid" id="score-info">
+    <h4>score: </h4>
+  </div>
+  <div id="welcom-bg" class="container-fluid" style="display: none;">
     <div id="welcom-bg-container" class="text-center">
       <h4>Your Previewed Aavegotchi (0000):</h4>
       <div id="previewed-gotchi-section" class="container-fluid">
@@ -62,7 +65,10 @@
       <i class="fab fa-youtube"></i>
     </a>
   </div>
-  <div style="display: none;" id="main-canvas"></div>
+  <!-- <div style="display: none;" id="main-canvas"></div> -->
+  <div id="main-canvas-container" class="d-flex justify-content-center">
+    <div id="main-canvas"></div>
+  </div>
   <video id="video" autoplay playsinline muted style="display: none;"></video>
   <canvas style="display: none;" id="video-output" class="bottom-right"></canvas>
   <script src="game-state.js"></script>
