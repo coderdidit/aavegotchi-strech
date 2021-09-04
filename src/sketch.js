@@ -17,9 +17,9 @@ const renderTraits = () => {
   const numericTraitsNames = ['⚡️ Energy', '👹 Aggression', '👻 Spookiness', '🧠 Brain size']
   let traits = ''
   const numericTraitsMap = numericTraits.slice(0, 4).forEach((_, i) => {
-    traits += `<li><span>${numericTraitsNames[i]}</span> <span>${i}</span></li>`
+    traits += `<li class="list-group-item"><span>${numericTraitsNames[i]}</span> <span>${i}</span></li>`
   })
-  gotchiTraitsDiv.innerHTML = `<p>Aavegotchi (0000)</p><ul>${traits}</ul>`
+  gotchiTraitsDiv.innerHTML = `<ul class="list-group">${traits}</ul>`
 }
 
 const setupPlayerSVG = async () => {
