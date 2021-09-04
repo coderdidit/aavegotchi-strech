@@ -3,6 +3,10 @@ import * as MoralisSDK from 'moralis'
 
 // bg
 import graveyardBGPath from './vendor/assets/bg/graveyard.png'
+import desertBGPath from './vendor/assets/bg/graveyard.png'
+import forestBGPath from './vendor/assets/bg/graveyard.png'
+import winterBGPath from './vendor/assets/bg/graveyard.png'
+
 // sounds
 import successSoundPath from './vendor/assets/sounds/success.mp3'
 import popSoundPath from './vendor/assets/sounds/pop.mp4'
@@ -51,21 +55,23 @@ const setupSketch = async () => {
   const svgDataUri = await setupPlayerSVG()
   const canvasParent = document.getElementById('main-canvas')
 
-  let img, graveyardBG;
+  let gotchiImg, graveyardBG;
   let successSound, popSound;
   const gotchiSize = 80
 
-  const loadImgFn = () => {
-    img = window.loadImage(svgDataUri)
-    graveyardBG = window.loadImage(graveyardBGPath)
+  const loadAssetsFn = () => {
+    gotchiImg = window.loadImage(svgDataUri)
+
     successSound = new Audio(successSoundPath)
     successSound.volume = 0.5
     popSound = new Audio(popSoundPath)
     popSound.volume = 0.2
+
+    graveyardBG = window.loadImage(graveyardBGPath)
   }
 
   window.preload = () => {
-    loadImgFn()
+    loadAssetsFn()
   }
 
   class Gotchi {
@@ -76,7 +82,7 @@ const setupSketch = async () => {
     }
 
     draw() {
-      image(img, this.x, this.y, gotchiSize, gotchiSize)
+      image(gotchiImg, this.x, this.y, gotchiSize, gotchiSize)
     }
 
     moveUp() {
