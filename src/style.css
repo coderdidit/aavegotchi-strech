@@ -24,12 +24,12 @@ body h4 {
 }
 
 #welcom-bg-container {
-  margin-top: 15%;
+  margin-top: 15vh;
   color: whitesmoke;
 }
 
-#main-canvas-container {
-  margin-top: 10vh;
+#main-canvas {
+  margin-top: 8vh;
 }
 
 #main-canvas canvas {
