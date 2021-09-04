@@ -118,11 +118,14 @@ const setupSketch = async () => {
 
         // update stat
         window.gameScore += 1
+        window.totalStrechCount += window.strechesInSession
         window.player.set('score', window.gameScore)
+        window.player.set('total_strech_count', window.totalStrechCount)
         window.player.save()
 
         document.getElementById('user-score').innerHTML = window.gameScore
         document.getElementById('strech-count-in-session').innerHTML = window.strechesInSession
+        document.getElementById('total-strech-count').innerHTML = window.totalStrechCount
 
         // party
         party.confetti(canvasParent)

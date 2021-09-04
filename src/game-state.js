@@ -30,7 +30,7 @@ window.gameStateIsInMove = () => {
         // otherwise do not increment if it was flickering
         if (window.strechesInSession == 0) {
             window.strechesInSession = window.strechesInSession + 1
-        } else if (timeDiff >= 0.7) {
+        } else if (timeDiff >= 0.5) {
             window.strechesInSession = window.strechesInSession + 1
         }
     }

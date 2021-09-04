@@ -7,10 +7,14 @@ import '@tensorflow/tfjs-backend-cpu';
 import getAnglesBetween from './angles';
 import * as MoralisSDK from 'moralis'
 
-const updateUserScoreView = () => {
-    const score =  window.player.get ? window.player.get('score') : 0
+const updateUserStatsView = () => {
+    const player = window.player
+    const score =  player.get && player.get('score') ? player.get('score') : 0
+    const totalStrechCount =  player.get && player.get('total_strech_count') ? player.get('total_strech_count') : 0
     window.gameScore = score
+    window.totalStrechCount = totalStrechCount
     document.getElementById('user-score').innerHTML = window.gameScore
+    document.getElementById('total-strech-count').innerHTML = window.totalStrechCount
 }
 
 // init moralis
@@ -36,7 +40,7 @@ const initWeb3 = async () => {
         const userEthAddress = user.get('ethAddress')
         window.player = user
         connectWalletBtn.innerHTML = ethAddressEllipsis(userEthAddress)
-        updateUserScoreView()
+        updateUserStatsView()
     }
 }
 
@@ -49,7 +53,7 @@ const login = async () => {
     const userEthAddress = user.get('ethAddress')
     console.log('user ethAddress after login', userEthAddress)
     connectWalletBtn.innerHTML = ethAddressEllipsis(userEthAddress)
-    updateUserScoreView()
+    updateUserStatsView()
 }
 
 const logoutBtn = document.getElementById('logout')
@@ -58,7 +62,7 @@ const logout = async () => {
     console.log('current user logout')
     connectWalletBtn.innerHTML = 'Connect Wallet'
     window.player = {}
-    updateUserScoreView()
+    updateUserStatsView()
 }
 logoutBtn.onclick = logout
 
