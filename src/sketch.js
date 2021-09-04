@@ -2,7 +2,7 @@ import party from "party-js"
 import * as MoralisSDK from 'moralis'
 
 // bg
-import bg1Path from './vendor/assets/bg/BG.png'
+import graveyardBGPath from './vendor/assets/bg/graveyard.png'
 // sounds
 import successSoundPath from './vendor/assets/sounds/success.mp3'
 import popSoundPath from './vendor/assets/sounds/pop.mp4'
@@ -51,13 +51,13 @@ const setupSketch = async () => {
   const svgDataUri = await setupPlayerSVG()
   const canvasParent = document.getElementById('main-canvas')
 
-  let img, bg1;
+  let img, graveyardBG;
   let successSound, popSound;
   const gotchiSize = 80
 
   const loadImgFn = () => {
     img = window.loadImage(svgDataUri)
-    bg1 = window.loadImage(bg1Path)
+    graveyardBG = window.loadImage(graveyardBGPath)
     successSound = new Audio(successSoundPath)
     successSound.volume = 0.5
     popSound = new Audio(popSoundPath)
@@ -112,7 +112,7 @@ const setupSketch = async () => {
 
   function drawBackground() {
     noStroke();
-    background(bg1);
+    background(graveyardBG);
   }
 
   let gotchi
