@@ -3,6 +3,10 @@ import * as MoralisSDK from 'moralis'
 
 // bg
 import bg1Path from './vendor/assets/bg/BG.png'
+// sounds
+import successSoundPath from './vendor/assets/sounds/success.mp3'
+import popSoundPath from './vendor/assets/sounds/pop.mp4'
+
 
 // init moralis
 const moralisAppID = process.env.MORALIS_APPLICATION_ID || ''
@@ -42,19 +46,22 @@ const setupPlayerSVG = async () => {
 }
 
 let score = 0;
-let bg1;
 
 const setupSketch = async () => {
   const svgDataUri = await setupPlayerSVG()
   const canvasParent = document.getElementById('main-canvas')
 
-  let img;
+  let img, bg1;
+  let successSound, popSound;
   const gotchiSize = 80
 
   const loadImgFn = () => {
     img = window.loadImage(svgDataUri)
-    console.log('image loaded', img)
     bg1 = window.loadImage(bg1Path)
+    successSound = new Audio(successSoundPath)
+    successSound.volume = 0.5
+    popSound = new Audio(popSoundPath)
+    popSound.volume = 0.2
   }
 
   window.preload = () => {
@@ -65,7 +72,7 @@ const setupSketch = async () => {
     constructor(x, y) {
       this.x = x
       this.y = y - 50
-      this.speed = 2.5
+      this.speed = 3
     }
 
     draw() {
@@ -78,10 +85,12 @@ const setupSketch = async () => {
       // Reset to the bottom
       // if top was reached
       if (this.y < 0) {
+        // WIN
         // trigger confetti
         score += 1
         document.getElementById('user-score').innerHTML = score
         party.confetti(canvasParent)
+        successSound.play()
         // reset to beginning
         this.y = getHeight() - 50;
       }
@@ -131,6 +140,7 @@ const setupSketch = async () => {
 
       if (window.gameStateIsInMove()) {
         ball.moveUp()
+        popSound.play()
       }
     }
   }
