@@ -1,6 +1,9 @@
 import party from "party-js"
 import * as MoralisSDK from 'moralis'
 
+// bg
+import bg1Path from './vendor/assets/bg/BG.png'
+
 // init moralis
 const moralisAppID = process.env.MORALIS_APPLICATION_ID || ''
 const moralisServerUrl = process.env.MORALIS_SERVER_URL || ''
@@ -39,6 +42,7 @@ const setupPlayerSVG = async () => {
 }
 
 let score = 0;
+let bg1;
 
 const setupSketch = async () => {
   const svgDataUri = await setupPlayerSVG()
@@ -50,6 +54,7 @@ const setupSketch = async () => {
   const loadImgFn = () => {
     img = window.loadImage(svgDataUri)
     console.log('image loaded', img)
+    bg1 = window.loadImage(bg1Path)
   }
 
   window.preload = () => {
@@ -60,7 +65,7 @@ const setupSketch = async () => {
     constructor(x, y) {
       this.x = x
       this.y = y - 50
-      this.speed = 1.8
+      this.speed = 2.5
     }
 
     draw() {
@@ -98,7 +103,7 @@ const setupSketch = async () => {
 
   function drawBackground() {
     noStroke();
-    background(18, 2, 47);
+    background(bg1);
   }
 
   let ball
