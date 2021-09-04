@@ -59,8 +59,6 @@ const setupPlayerSVG = async () => {
   return svgDataUri
 }
 
-let score = 0;
-
 const setupSketch = async () => {
   const svgDataUri = await setupPlayerSVG()
   const canvasParent = document.getElementById('main-canvas')
@@ -116,11 +114,13 @@ const setupSketch = async () => {
       // Reset to the bottom
       // if top was reached
       if (this.y < 0) {
-        // WIN
+        // SCORED!
         // trigger confetti
-        score += 1
+        window.gameScore += 1
+        window.player.set('score', window.gameScore)
+        window.player.save()
         level = (level + 1) % backgrounds.length
-        document.getElementById('user-score').innerHTML = score
+        document.getElementById('user-score').innerHTML = window.gameScore
         party.confetti(canvasParent)
         successSound.play()
         // new bg

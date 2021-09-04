@@ -21,3 +21,5 @@ window.gameStateIsInMove = () => {
 
 window.gameStateInit()
 
+window.player = {}
+window.gameScore = 0
