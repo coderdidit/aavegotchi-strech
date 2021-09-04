@@ -115,17 +115,22 @@ const setupSketch = async () => {
       // if top was reached
       if (this.y < 0) {
         // SCORED!
-        // trigger confetti
+
+        // update stat
         window.gameScore += 1
         window.player.set('score', window.gameScore)
         window.player.save()
-        level = (level + 1) % backgrounds.length
+
         document.getElementById('user-score').innerHTML = window.gameScore
+        document.getElementById('strech-count-in-session').innerHTML = window.strechesInSession
+
+        // party
         party.confetti(canvasParent)
         successSound.play()
-        // new bg
+        // change background
+        level = (level + 1) % backgrounds.length
         drawBackground(backgrounds[level]);
-        // reset to beginning
+        // reset gotchi position to beginning
         this.y = getHeight() - 50;
         repreviewGotchi()
       }
@@ -170,7 +175,7 @@ const setupSketch = async () => {
 
     if (window.gameState) {
       gotchi.draw()
-
+      
       if (window.gameStateIsInMove()) {
         gotchi.moveUp()
         popSound.play()
