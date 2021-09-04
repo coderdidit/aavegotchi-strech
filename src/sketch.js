@@ -68,7 +68,7 @@ const setupSketch = async () => {
   let graveyardBG, desertBG, forestBG, winterBG;
   let backgrounds;
   let successSound, popSound;
-  const gotchiSize = 80
+  const gotchiSize = 150
 
   const repreviewGotchi = async () => {
     const hat = equippedWearables[0] + 1
@@ -100,7 +100,7 @@ const setupSketch = async () => {
   class Gotchi {
     constructor(x, y) {
       this.x = x
-      this.y = y - 50
+      this.y = y - gotchiSize + 20
       this.speed = 5.5
     }
 
@@ -134,7 +134,7 @@ const setupSketch = async () => {
         level = (level + 1) % backgrounds.length
         drawBackground(backgrounds[level]);
         // reset gotchi position to beginning
-        this.y = getHeight() - 50;
+        this.y = getHeight() - gotchiSize + 10;
         repreviewGotchi()
       }
     }
@@ -149,8 +149,8 @@ const setupSketch = async () => {
 
   function drawLadder() {
     fill(81, 1, 176);
-    const rectWidth = 80
-    rect((w / 2) - rectWidth / 2, 0, 80, h - 90);
+    const rectWidth = 120
+    rect((w / 2) - rectWidth / 2, 0, rectWidth, h - 90);
   }
 
   function drawBackground(bg) {
