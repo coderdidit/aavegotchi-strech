@@ -104,7 +104,7 @@ const initSketch = async () => {
     }
 
     const getHeight = () => {
-      return s.height - 45
+      return s.height - 25
     }
 
     class Gotchi {
@@ -162,11 +162,6 @@ const initSketch = async () => {
     s.preload = () => {
       console.log('p5js preload')
       loadAssetsFn()
-
-      // init gotchi
-      let gx = (w / 2) - (gotchiSize / 2);
-      let gy = getHeight() - 9;
-      gotchi = new Gotchi(gx, gy)
     }
 
     s.setup = () => {
@@ -174,6 +169,11 @@ const initSketch = async () => {
       const sketchCanvas = s.createCanvas(w, h - 90);
       sketchCanvas.parent("main-canvas");
       drawBackground(backgrounds[level]);
+
+      // init gotchi
+      let gx = (w / 2) - (gotchiSize / 2);
+      let gy = getHeight() - 9;
+      gotchi = new Gotchi(gx, gy)
 
       // for debuggin
       window.setupP5JsDone = true
@@ -202,6 +202,6 @@ window.setTimeout(
     if (!window.setupP5JsDone) {
       alert('something went wrong with fetching p5js library please refresh the page')
     }
-  }, 2000
+  }, 3000
 )
 
