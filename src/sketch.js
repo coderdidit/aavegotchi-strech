@@ -1,5 +1,6 @@
 import party from "party-js"
 import * as MoralisSDK from 'moralis'
+import updatePlayerStats from './game-state'
 
 // bg
 import graveyardBGPath from './vendor/assets/bg/graveyard.png'
@@ -67,14 +68,13 @@ const initSketch = async () => {
   const sketch = async (s) => {
     const w = window.innerWidth / 1.3
     const h = window.innerHeight / 1.25
+    const gotchiSize = 90
 
     let gotchiImg;
     let level = 0
-    let graveyardBG, desertBG, forestBG, winterBG;
-    let backgrounds;
+    let graveyardBG, desertBG, forestBG, winterBG, backgrounds;
     let successSound, popSound;
-    const gotchiSize = 90
-
+  
     const rePreviewGotchi = async () => {
       const hat = equippedWearables[0] + 1
       equippedWearables[0] = hat
@@ -84,14 +84,11 @@ const initSketch = async () => {
 
     const loadAssetsFn = () => {
       gotchiImg = s.loadImage(svgDataUri) // p5js fn
-
       successSound = new Audio(successSoundPath)
       successSound.volume = 0.5
       popSound = new Audio(popSoundPath)
       popSound.volume = 0.2
-
       graveyardBG = s.loadImage(graveyardBGPath) // p5js fn
-
       desertBG = s.loadImage(desertBGPath) // p5js fn
       forestBG = s.loadImage(forestBGPath) // p5js fn
       winterBG = s.loadImage(winterBGPath) // p5js fn
@@ -103,9 +100,7 @@ const initSketch = async () => {
       s.background(bg);
     }
 
-    const getHeight = () => {
-      return s.height - 25
-    }
+    const getHeight = () => s.height - 25
 
     class Gotchi {
       constructor(x, y) {
@@ -121,23 +116,11 @@ const initSketch = async () => {
       moveUp() {
         // Moving up at a constant speed
         this.y -= this.speed
-        // Reset to the bottom
         // if top was reached
         if (this.y < 0) {
+          // if top was reached
           // SCORED!
-
-          // update stat
-          if (window.player) {
-            window.gameScore += 1
-            window.totalStrechCount += window.strechesInSession
-            window.player.set('score', window.gameScore)
-            window.player.set('total_strech_count', window.totalStrechCount)
-            window.player.save()
-
-            document.getElementById('user-score').innerHTML = window.gameScore
-            document.getElementById('strech-count-in-session').innerHTML = window.strechesInSession
-            document.getElementById('total-strech-count').innerHTML = window.totalStrechCount
-          }
+          updatePlayerStats()
           // party
           party.confetti(canvasParent)
           successSound.play()
@@ -156,14 +139,13 @@ const initSketch = async () => {
       const rectWidth = 90
       s.rect((w / 2) - rectWidth / 2, 0, rectWidth, h - 90); // p5js fn
     }
-
-
-    let gotchi;
+    
     s.preload = () => {
       console.log('p5js preload')
       loadAssetsFn()
     }
 
+    let gotchi;
     s.setup = () => {
       console.log('setup p5js sketch')
       const sketchCanvas = s.createCanvas(w, h - 90);
@@ -175,7 +157,7 @@ const initSketch = async () => {
       let gy = getHeight() - 9;
       gotchi = new Gotchi(gx, gy)
 
-      // for debuggin
+      // for debuggin and alerting
       window.setupP5JsDone = true
     }
 
