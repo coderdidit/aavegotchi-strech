@@ -12,8 +12,8 @@ const connectWalletBtn = document.getElementById('connect-wallet')
 
 const updateUserStatsView = () => {
     const player = window.player
-    const score =  player.get && player.get('score') ? player.get('score') : 0
-    const totalStrechCount =  player.get && player.get('total_strech_count') ? player.get('total_strech_count') : 0
+    const score = player.get && player.get('score') ? player.get('score') : 0
+    const totalStrechCount = player.get && player.get('total_strech_count') ? player.get('total_strech_count') : 0
     window.gameScore = score
     window.totalStrechCount = totalStrechCount
     document.getElementById('user-score').innerHTML = window.gameScore
@@ -22,10 +22,10 @@ const updateUserStatsView = () => {
 
 const ethAddressEllipsis = (str) => {
     if (str.length > 15) {
-      return str.substr(0, 5) + '...' + str.substr(str.length-5, str.length);
+        return str.substr(0, 5) + '...' + str.substr(str.length - 5, str.length);
     }
     return str;
-  }
+}
 
 const initWeb3 = async () => {
     window.web3 = await Moralis.Web3.enable()
@@ -57,4 +57,21 @@ const logout = async () => {
     updateUserStatsView()
 }
 
-export {initWeb3, login, logout}
+// uses Moralis CloudFunction `getSVG`
+const getGotchiSVG = async (wearables, numericTraits) => {
+    const rawSVG = await Moralis.Cloud.
+        run("getSVG", {
+            numericTraits: numericTraits,
+            equippedWearables: wearables
+        })
+    const removeBG = (svg) => {
+        const styledSvg = svg.replace("<style>", "<style>.gotchi-bg,.wearable-bg{display: none}");
+        return styledSvg;
+    };
+    const rawSVGNoBG = removeBG(rawSVG)
+    const svgStrBase64 = window.btoa(rawSVGNoBG)
+    const svgDataUri = `data:image/svg+xml;base64,${svgStrBase64}`
+    return svgDataUri
+}
+
+export { initWeb3, login, logout, getGotchiSVG }
