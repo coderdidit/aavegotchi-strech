@@ -157,9 +157,6 @@ const setupGame = async () => {
 
     //Instantiate the game with the config
     const game = new Phaser.Game(config)
-
-    // for debugging
-    window.scene = game
 }
 
 setupGame()
