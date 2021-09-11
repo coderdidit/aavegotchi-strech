@@ -1,5 +1,5 @@
 import Phaser from "phaser";
-
+import ladderPath from "./vendor/assets/tiles/ladder.png";
 
 let cursors = []
 let player
@@ -28,7 +28,7 @@ var gamePlay = new Phaser.Class({
         );
         this.load.image(
             "ladder",
-            "vendor/assets/tiles/ladder.png"
+            ladderPath
         );
         this.load.spritesheet(
             "dude",
