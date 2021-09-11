@@ -16,7 +16,6 @@ import winterBGPath from './vendor/assets/bg/winter.png'
 import successSoundPath from './vendor/assets/sounds/success.mp3'
 import popSoundPath from './vendor/assets/sounds/pop.mp4'
 
-let gotchi
 const canvasParent = document.getElementById('main-canvas')
 
 const backGrounds = new Map([
@@ -28,6 +27,8 @@ const backGrounds = new Map([
 let bgs = [...backGrounds.keys()]
 let level = 0
 let successSound, popSound
+let rePreviewed = false
+let gotchi
 
 const numericTraits = [1, 5, 99, 29, 6, 8] // at index 0 is hat
 const equippedWearables = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -49,8 +50,6 @@ const setupPlayerSVG = async () => {
     renderTraits(svgDataUri)
     return svgDataUri
 }
-
-let rePreviewed = false
 
 const setupGame = async () => {
     const svgDataUri = await setupPlayerSVG()
