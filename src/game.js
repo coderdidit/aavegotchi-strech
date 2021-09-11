@@ -32,9 +32,7 @@ let successSound, popSound
 const numericTraits = [1, 5, 99, 29, 6, 8] // at index 0 is hat
 const equippedWearables = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-const renderTraits = (svgString) => {
-    const svgStrBase64 = window.btoa(svgString)
-    const svgDataUri = `data:image/svg+xml;base64,${svgStrBase64}`
+const renderTraits = (svgDataUri) => {
     const aavegotchiPreview = document.getElementById('aavegotchi-preview')
     aavegotchiPreview.src = svgDataUri
     const gotchiTraitsDiv = document.getElementById('gotchi-traits')
@@ -48,12 +46,14 @@ const renderTraits = (svgString) => {
 
 const setupPlayerSVG = async () => {
     const svgString = await moralis.getGotchiSVG(equippedWearables, numericTraits)
-    renderTraits(svgString)
-    return svgString
+    const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+    const svgDataUri = URL.createObjectURL(blob);
+    renderTraits(svgDataUri)
+    return svgDataUri
 }
 
 const setupGame = async () => {
-    const svgString = await setupPlayerSVG()
+    const svgDataUri = await setupPlayerSVG()
 
     const gamePlay = new Phaser.Class({
         // Define scene
@@ -76,9 +76,7 @@ const setupGame = async () => {
                 "ladder",
                 ladderPath
             );
-            const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
-            this.load.svg('gotchi', url)
+            this.load.svg('gotchi', svgDataUri)
         },
 
         /*--- THE CREATE FUNCTION: SET UP THE SCENE ON LOAD ---*/
