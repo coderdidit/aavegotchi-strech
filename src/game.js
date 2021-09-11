@@ -29,7 +29,6 @@ let bgs = [...backGrounds.keys()]
 let level = 0
 let successSound, popSound
 
-// fetch and setup player SVG (previewed Aavegotchi)
 const numericTraits = [1, 5, 99, 29, 6, 8] // at index 0 is hat
 const equippedWearables = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
