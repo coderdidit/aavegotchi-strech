@@ -50,12 +50,12 @@ const setupPlayerSVG = async () => {
     return svgDataUri
 }
 
+let rePreviewed = false
 
 const setupGame = async () => {
     const svgDataUri = await setupPlayerSVG()
 
     const rePreviewGotchi = async (game) => {
-        console.log('rePreviewGotchi', game.textures)
         const hat = equippedWearables[0] + 1
         equippedWearables[0] = hat
         const svgDataUri = await moralis.getGotchiSVG(equippedWearables, numericTraits)
@@ -64,12 +64,6 @@ const setupGame = async () => {
         game.load.start()
         game.load.once('complete', () => {
             console.log('load complete')
-            // gotchi = game.physics.add
-            //     .sprite(config.width / 2, config.height - 60, 'gotchi')
-            // gotchi.setScale(0.69)
-            // console.log('new gotchi')
-            // console.log(gotchi)
-            // gotchi.refresh()
         })
     }
 
@@ -94,9 +88,6 @@ const setupGame = async () => {
                 ladderPath
             );
             this.load.svg('gotchi', svgDataUri)
-            this.load.once('complete', () => {
-                console.log('load complete')
-            })
         },
 
         /*--- THE CREATE FUNCTION: SET UP THE SCENE ON LOAD ---*/
@@ -126,13 +117,16 @@ const setupGame = async () => {
         update: function () {
             // Update objects & variables
             const scored = gotchi.y <= 0
+            if (!rePreviewed) {
+                rePreviewGotchi(this)
+                rePreviewed = true
+            }
             if (scored) {
                 level = (level + 1) % bgs.length
                 party.confetti(canvasParent)
                 successSound.play()
-
-                rePreviewGotchi(this)
                 this.updateSrites()
+                rePreviewed = false
             }
             gotchi.setVelocity(0, 0);
             if (window.gameStateIsInMove()) {
