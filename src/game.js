@@ -66,10 +66,11 @@ var gamePlay = new Phaser.Class({
         // draw ladders
         let ladderCount = 3
         let ladderY = config.height - 200
-        Array.from(Array(ladderCount)).forEach(() => {
-            let curLadder = this.add.image(config.width / 2, ladderY, 'ladder').setScale(0.1)
+        for (let i = ladderCount; i--;) {
+            let curLadder = this.add.image(config.width / 2, ladderY, 'ladder')
+                .setScale(0.1)
             ladderY = ladderY - curLadder.displayHeight
-        });
+        }
         // Create player
         player = this.physics.add.sprite(config.width / 2, config.height - 32, "dude");
     },
@@ -92,7 +93,7 @@ var gamePlay = new Phaser.Class({
         // Update objects & variables
         const scored = player.y <= 0
         if (scored) {
-            level = level + 1 % bgs.length
+            level = (level + 1) % bgs.length
             this.updateSrites()
         }
         player.setVelocity(0, 0);
