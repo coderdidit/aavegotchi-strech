@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import party from "party-js"
 import * as moralis from './moralis-wrapper'
+import updatePlayerStats from './game-state'
 
 // tiles
 import ladderPath from "./vendor/assets/tiles/ladder.png";
@@ -118,6 +119,7 @@ const setupGame = async () => {
             if (scored) {
                 party.confetti(canvasParent)
                 successSound.play()
+                updatePlayerStats()
                 // open next level
                 level = (level + 1) % bgs.length
                 this.updateSrites()
