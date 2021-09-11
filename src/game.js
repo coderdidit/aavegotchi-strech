@@ -45,15 +45,31 @@ const renderTraits = (svgDataUri) => {
 }
 
 const setupPlayerSVG = async () => {
-    const svgString = await moralis.getGotchiSVG(equippedWearables, numericTraits)
-    const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
-    const svgDataUri = URL.createObjectURL(blob);
+    const svgDataUri = await moralis.getGotchiSVG(equippedWearables, numericTraits)
     renderTraits(svgDataUri)
     return svgDataUri
 }
 
+
+
 const setupGame = async () => {
     const svgDataUri = await setupPlayerSVG()
+
+    const rePreviewGotchi = async (game) => {
+        console.log('rePreviewGotchi', game.textures)
+        const hat = equippedWearables[0] + 1
+        equippedWearables[0] = hat
+        const svgDataUri = await moralis.getGotchiSVG(equippedWearables, numericTraits)
+        game.textures.removeKey('gotchi')
+        game.load.svg('gotchi', svgDataUri)
+        game.load.start()
+        game.load.once('complete', () => {
+            console.log('load complete')
+            player = game.physics.add
+                .sprite(config.width / 2, config.height - 60, 'gotchi')
+            player.setScale(0.69)
+        })
+    }
 
     const gamePlay = new Phaser.Class({
         // Define scene
@@ -69,7 +85,6 @@ const setupGame = async () => {
             successSound.volume = 0.5
             popSound = new Audio(popSoundPath)
             popSound.volume = 0.2
-
             // Preload images
             backGrounds.forEach((path, name) => this.load.image(name, path))
             this.load.image(
@@ -77,6 +92,9 @@ const setupGame = async () => {
                 ladderPath
             );
             this.load.svg('gotchi', svgDataUri)
+            this.load.once('complete', () => {
+                console.log('load complete')
+            })
         },
 
         /*--- THE CREATE FUNCTION: SET UP THE SCENE ON LOAD ---*/
@@ -94,8 +112,8 @@ const setupGame = async () => {
             }
             // Create player
             player = this.physics.add
-                .sprite(config.width / 2, config.height - 60, "gotchi")
-                .setScale(0.69)
+                .sprite(config.width / 2, config.height - 60, 'gotchi')
+            player.setScale(0.69)
         },
 
         create: function () {
@@ -103,21 +121,20 @@ const setupGame = async () => {
         },
 
         /*--- THE UPDATE FUNCTION: MAKE CHANGES TO THE GAME OVER TIME ---*/
-
         update: function () {
             // Update objects & variables
             const scored = player.y <= 0
             if (scored) {
                 level = (level + 1) % bgs.length
-                this.updateSrites()
                 party.confetti(canvasParent)
                 successSound.play()
+                rePreviewGotchi(this)
+                this.updateSrites()
             }
             player.setVelocity(0, 0);
             if (window.gameStateIsInMove()) {
                 //  Move up
                 player.setVelocityY(-200);
-                player.anims.play("up");
                 popSound.play()
             }
         }
@@ -129,7 +146,7 @@ const setupGame = async () => {
     const isMobile = window.innerWidth < 450
     const scaleDownSketch = !isMobile
 
-    var config = {
+    const config = {
         type: Phaser.AUTO,
         width: scaleDownSketch ? window.innerWidth / 1.2 : window.innerWidth,
         height: scaleDownSketch ? window.innerHeight / 1.3 : window.innerHeight / 1.2,
@@ -148,6 +165,9 @@ const setupGame = async () => {
 
     //Instantiate the game with the config
     const game = new Phaser.Game(config)
+
+    // for debugging
+    window.scene = game
 }
 
 setupGame()
