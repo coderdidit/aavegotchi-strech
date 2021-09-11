@@ -55,18 +55,6 @@ let rePreviewed = false
 const setupGame = async () => {
     const svgDataUri = await setupPlayerSVG()
 
-    const rePreviewGotchi = async (game) => {
-        const hat = equippedWearables[0] + 1
-        equippedWearables[0] = hat
-        const svgDataUri = await moralis.getGotchiSVG(equippedWearables, numericTraits)
-        game.textures.removeKey('gotchi')
-        game.load.svg('gotchi', svgDataUri)
-        game.load.start()
-        game.load.once('complete', () => {
-            console.log('load complete')
-        })
-    }
-
     const gamePlay = new Phaser.Class({
         // Define scene
         Extends: Phaser.Scene,
@@ -74,7 +62,15 @@ const setupGame = async () => {
             Phaser.Scene.call(this, { key: "GamePlay" });
         },
 
-        /*--- THE PRELOAD FUNCTION: LOAD THE ASSETS ---*/
+        rePreviewGotchi: async function () {
+            const hat = equippedWearables[0] + 1
+            equippedWearables[0] = hat
+            const svgDataUri = await moralis.getGotchiSVG(equippedWearables, numericTraits)
+            this.textures.removeKey('gotchi')
+            this.load.svg('gotchi', svgDataUri)
+            this.load.start()
+        },
+
         preload: function () {
             // sounds
             successSound = new Audio(successSoundPath)
@@ -90,7 +86,6 @@ const setupGame = async () => {
             this.load.svg('gotchi', svgDataUri)
         },
 
-        /*--- THE CREATE FUNCTION: SET UP THE SCENE ON LOAD ---*/
         updateSrites: function () {
             // Create background
             this.bg = this.add.image(config.width / 2, config.height / 2, bgs[level]);
@@ -113,18 +108,18 @@ const setupGame = async () => {
             this.updateSrites()
         },
 
-        /*--- THE UPDATE FUNCTION: MAKE CHANGES TO THE GAME OVER TIME ---*/
         update: function () {
             // Update objects & variables
             const scored = gotchi.y <= 0
             if (!rePreviewed) {
-                rePreviewGotchi(this)
+                this.rePreviewGotchi()
                 rePreviewed = true
             }
             if (scored) {
-                level = (level + 1) % bgs.length
                 party.confetti(canvasParent)
                 successSound.play()
+                // open next level
+                level = (level + 1) % bgs.length
                 this.updateSrites()
                 rePreviewed = false
             }
