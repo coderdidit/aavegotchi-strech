@@ -15,7 +15,7 @@ import winterBGPath from './vendor/assets/bg/winter.png'
 import successSoundPath from './vendor/assets/sounds/success.mp3'
 import popSoundPath from './vendor/assets/sounds/pop.mp4'
 
-let player
+let gotchi
 const canvasParent = document.getElementById('main-canvas')
 
 const backGrounds = new Map([
@@ -51,7 +51,6 @@ const setupPlayerSVG = async () => {
 }
 
 
-
 const setupGame = async () => {
     const svgDataUri = await setupPlayerSVG()
 
@@ -65,9 +64,12 @@ const setupGame = async () => {
         game.load.start()
         game.load.once('complete', () => {
             console.log('load complete')
-            player = game.physics.add
-                .sprite(config.width / 2, config.height - 60, 'gotchi')
-            player.setScale(0.69)
+            // gotchi = game.physics.add
+            //     .sprite(config.width / 2, config.height - 60, 'gotchi')
+            // gotchi.setScale(0.69)
+            // console.log('new gotchi')
+            // console.log(gotchi)
+            // gotchi.refresh()
         })
     }
 
@@ -110,10 +112,10 @@ const setupGame = async () => {
                     .setScale(0.1)
                 ladderY = ladderY - curLadder.displayHeight
             }
-            // Create player
-            player = this.physics.add
+            // Create gotchi
+            gotchi = this.physics.add
                 .sprite(config.width / 2, config.height - 60, 'gotchi')
-            player.setScale(0.69)
+            gotchi.setScale(0.69)
         },
 
         create: function () {
@@ -123,18 +125,19 @@ const setupGame = async () => {
         /*--- THE UPDATE FUNCTION: MAKE CHANGES TO THE GAME OVER TIME ---*/
         update: function () {
             // Update objects & variables
-            const scored = player.y <= 0
+            const scored = gotchi.y <= 0
             if (scored) {
                 level = (level + 1) % bgs.length
                 party.confetti(canvasParent)
                 successSound.play()
+
                 rePreviewGotchi(this)
                 this.updateSrites()
             }
-            player.setVelocity(0, 0);
+            gotchi.setVelocity(0, 0);
             if (window.gameStateIsInMove()) {
                 //  Move up
-                player.setVelocityY(-200);
+                gotchi.setVelocityY(-200);
                 popSound.play()
             }
         }
