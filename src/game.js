@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import party from "party-js"
 
 // tiles
 import ladderPath from "./vendor/assets/tiles/ladder.png";
@@ -15,7 +16,7 @@ import popSoundPath from './vendor/assets/sounds/pop.mp4'
 
 let cursors = []
 let player
-
+const canvasParent = document.getElementById('main-canvas')
 
 const backGrounds = new Map([
     ["graveyard", graveyardBGPath],
@@ -76,7 +77,6 @@ var gamePlay = new Phaser.Class({
     },
 
     create: function () {
-        console.log('config', config)
         this.updateSrites()
         // Create animations for player
         this.anims.create({
@@ -95,12 +95,15 @@ var gamePlay = new Phaser.Class({
         if (scored) {
             level = (level + 1) % bgs.length
             this.updateSrites()
+            party.confetti(canvasParent)
+            successSound.play()
         }
         player.setVelocity(0, 0);
         if (cursors.up.isDown) {
             //  Move up
             player.setVelocityY(-200);
             player.anims.play("up");
+            popSound.play()
         }
     }
 });
