@@ -1,11 +1,31 @@
 import Phaser from "phaser";
+
+// tiles
 import ladderPath from "./vendor/assets/tiles/ladder.png";
+
+// bg
+import graveyardBGPath from './vendor/assets/bg/graveyard.png'
+import desertBGPath from './vendor/assets/bg/desert.png'
+import forestBGPath from './vendor/assets/bg/forest.png'
+import winterBGPath from './vendor/assets/bg/winter.png'
+
+// sounds
+import successSoundPath from './vendor/assets/sounds/success.mp3'
+import popSoundPath from './vendor/assets/sounds/pop.mp4'
 
 let cursors = []
 let player
 
-let bgs = ["sky", "sky2"]
+
+const backGrounds = new Map([
+    ["graveyard", graveyardBGPath],
+    ["desert", desertBGPath],
+    ["forest", forestBGPath],
+    ["winter", winterBGPath]])
+
+let bgs = [...backGrounds.keys()]
 let level = 0
+let successSound, popSound;
 
 var gamePlay = new Phaser.Class({
     // Define scene
@@ -17,15 +37,14 @@ var gamePlay = new Phaser.Class({
     /*--- THE PRELOAD FUNCTION: LOAD THE ASSETS ---*/
 
     preload: function () {
+        // sounds
+        successSound = new Audio(successSoundPath)
+        successSound.volume = 0.5
+        popSound = new Audio(popSoundPath)
+        popSound.volume = 0.2
+
         // Preload images
-        this.load.image(
-            "sky",
-            "https://raw.githubusercontent.com/cattsmall/Phaser-game/5-2014-game/assets/sky.png"
-        );
-        this.load.image(
-            "sky2",
-            "https://4.bp.blogspot.com/-KNRLf5CeP7w/UieET_1_KGI/AAAAAAAAO4Y/ltB8sK9lSGM/s1600/Sprite_background_effects_0022.png"
-        );
+        backGrounds.forEach((path, name) => this.load.image(name, path))
         this.load.image(
             "ladder",
             ladderPath
@@ -44,7 +63,7 @@ var gamePlay = new Phaser.Class({
 
     create: function () {
         // Create background
-        this.backgroundSprite = this.add.image(config.width / 2, config.height / 2, "sky");
+        this.bg = this.add.image(config.width / 2, config.height / 2, bgs[level]);
 
         // ladder
         this.add.image(config.width / 2, config.height - 150, 'ladder').setScale(0.1)
@@ -77,7 +96,8 @@ var gamePlay = new Phaser.Class({
             console.log('nextBgIdx', nextBgIdx)
             const nextBgName = bgs[nextBgIdx]
             // Create background
-            this.backgroundSprite = this.add.image(config.width / 2, config.height / 2, nextBgName);
+            this.bg = this.add.image(config.width / 2, config.height / 2, nextBgName);
+            this.bg.setDisplaySize(config.width, config.height);
             // ladder
             this.add.image(config.width / 2, config.height - 150, 'ladder').setScale(0.1)
             this.add.image(config.width / 2, 25, 'ladder').setScale(0.1)
@@ -87,7 +107,7 @@ var gamePlay = new Phaser.Class({
         player.setVelocity(0, 0);
         if (cursors.up.isDown) {
             //  Move up
-            player.setVelocityY(-150);
+            player.setVelocityY(-200);
             player.anims.play("up");
         }
     }
@@ -96,10 +116,13 @@ var gamePlay = new Phaser.Class({
 /*--- CONFIG + RUNNING THE GAME ---*/
 
 //Define the game config once everything else is defined
+const isMobile = window.innerWidth < 450
+const scaleDownSketch = !isMobile
+
 var config = {
     type: Phaser.AUTO,
-    width: 640,
-    height: 480,
+    width: scaleDownSketch ? window.innerWidth / 1.2: window.innerWidth,
+    height: scaleDownSketch ? window.innerHeight / 1.3: window.innerHeight,
     parent: 'main-canvas',
     pixelArt: true,
     physics: {
