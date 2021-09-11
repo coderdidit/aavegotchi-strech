@@ -50,7 +50,7 @@ var gamePlay = new Phaser.Class({
             ladderPath
         );
         this.load.spritesheet(
-            "dude",
+            "gotchi",
             "https://raw.githubusercontent.com/cattsmall/Phaser-game/5-2014-game/assets/dude.png",
             {
                 frameWidth: 32,
@@ -73,7 +73,7 @@ var gamePlay = new Phaser.Class({
             ladderY = ladderY - curLadder.displayHeight
         }
         // Create player
-        player = this.physics.add.sprite(config.width / 2, config.height - 32, "dude");
+        player = this.physics.add.sprite(config.width / 2, config.height - 32, "gotchi");
     },
 
     create: function () {
@@ -81,7 +81,7 @@ var gamePlay = new Phaser.Class({
         // Create animations for player
         this.anims.create({
             key: "up",
-            frames: this.anims.generateFrameNumbers("dude", { start: 3, end: 3 })
+            frames: this.anims.generateFrameNumbers("gotchi", { start: 3, end: 3 })
         });
     },
 
