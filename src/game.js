@@ -64,13 +64,15 @@ var gamePlay = new Phaser.Class({
         this.bg = this.add.image(config.width / 2, config.height / 2, bgs[level]);
         this.bg.setDisplaySize(config.width, config.height);
         // ladder
-        this.add.image(config.width / 2, config.height - 150, 'ladder').setScale(0.1)
-        this.add.image(config.width / 2, 25, 'ladder').setScale(0.1)
+        let ladderYStart = config.height - 200
+        let ladder = this.add.image(config.width / 2, config.height - 200, 'ladder').setScale(0.1)
+        this.add.image(config.width / 2, ladderYStart-ladder.displayHeight, 'ladder').setScale(0.1)
         // Create player
         player = this.physics.add.sprite(config.width / 2, config.height - 32, "dude");
     },
 
     create: function () {
+        console.log('config', config)
         this.updateSrites()
         // Create animations for player
         this.anims.create({
