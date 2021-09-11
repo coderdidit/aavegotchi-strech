@@ -26,9 +26,11 @@ const backGrounds = new Map([
 
 let bgs = [...backGrounds.keys()]
 let level = 0
-let successSound, popSound;
+let successSound, popSound
 
-var gamePlay = new Phaser.Class({
+const svgString = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"/></svg>`;
+
+const gamePlay = new Phaser.Class({
     // Define scene
     Extends: Phaser.Scene,
     initialize: function GamePlay() {
@@ -49,14 +51,9 @@ var gamePlay = new Phaser.Class({
             "ladder",
             ladderPath
         );
-        this.load.spritesheet(
-            "gotchi",
-            "https://raw.githubusercontent.com/cattsmall/Phaser-game/5-2014-game/assets/dude.png",
-            {
-                frameWidth: 32,
-                frameHeight: 48
-            }
-        )
+        const blob = new Blob([svgString], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        this.load.svg('gotchi', url)
     },
 
     /*--- THE CREATE FUNCTION: SET UP THE SCENE ON LOAD ---*/
@@ -78,11 +75,6 @@ var gamePlay = new Phaser.Class({
 
     create: function () {
         this.updateSrites()
-        // Create animations for player
-        this.anims.create({
-            key: "up",
-            frames: this.anims.generateFrameNumbers("gotchi", { start: 3, end: 3 })
-        });
     },
 
     /*--- THE UPDATE FUNCTION: MAKE CHANGES TO THE GAME OVER TIME ---*/
