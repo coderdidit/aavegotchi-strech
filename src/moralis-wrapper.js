@@ -72,9 +72,7 @@ const getGotchiSVG = async (wearables, numericTraits) => {
         return styledSvg;
     };
     const rawSVGNoBG = removeBG(rawSVG)
-    const svgStrBase64 = window.btoa(rawSVGNoBG)
-    const svgDataUri = `data:image/svg+xml;base64,${svgStrBase64}`
-    return svgDataUri
+    return rawSVGNoBG
 }
 
 export { initWeb3, login, logout, getGotchiSVG }
