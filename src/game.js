@@ -16,6 +16,7 @@ import popSoundPath from './vendor/assets/sounds/pop.mp4'
 
 let player
 const canvasParent = document.getElementById('main-canvas')
+const gotchiSize = 90
 
 const backGrounds = new Map([
     ["graveyard", graveyardBGPath],
@@ -55,7 +56,7 @@ var gamePlay = new Phaser.Class({
                 frameWidth: 32,
                 frameHeight: 48
             }
-        );
+        )
     },
 
     /*--- THE CREATE FUNCTION: SET UP THE SCENE ON LOAD ---*/
@@ -114,7 +115,7 @@ const scaleDownSketch = !isMobile
 var config = {
     type: Phaser.AUTO,
     width: scaleDownSketch ? window.innerWidth / 1.2 : window.innerWidth,
-    height: scaleDownSketch ? window.innerHeight / 1.3 : window.innerHeight,
+    height: scaleDownSketch ? window.innerHeight / 1.3 : window.innerHeight / 1.2,
     parent: 'main-canvas',
     pixelArt: true,
     physics: {
