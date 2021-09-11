@@ -68,14 +68,14 @@ const getGotchiSVG = async (wearables, numericTraits) => {
             equippedWearables: wearables
         })
 
-    var parser = new DOMParser();
-    var result = parser.parseFromString(rawSVG, 'text/xml');
-    var inlineSVG = result.getElementsByTagName("svg")[0];
+    const parser = new DOMParser();
+    const result = parser.parseFromString(rawSVG, 'text/xml');
+    const inlineSVG = result.getElementsByTagName("svg")[0];
     if (inlineSVG.getAttribute('width') == undefined) {
         inlineSVG.setAttribute('width', '180px');
         inlineSVG.setAttribute('height', '180px');
     }
-    
+
     const rawSVGEnhanced = new XMLSerializer().serializeToString(inlineSVG)
 
     const removeBG = (svg) => {
