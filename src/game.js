@@ -35,7 +35,6 @@ var gamePlay = new Phaser.Class({
     },
 
     /*--- THE PRELOAD FUNCTION: LOAD THE ASSETS ---*/
-
     preload: function () {
         // sounds
         successSound = new Audio(successSoundPath)
@@ -60,27 +59,24 @@ var gamePlay = new Phaser.Class({
     },
 
     /*--- THE CREATE FUNCTION: SET UP THE SCENE ON LOAD ---*/
-
-    create: function () {
+    updateSrites: function () {
         // Create background
         this.bg = this.add.image(config.width / 2, config.height / 2, bgs[level]);
-
+        this.bg.setDisplaySize(config.width, config.height);
         // ladder
         this.add.image(config.width / 2, config.height - 150, 'ladder').setScale(0.1)
         this.add.image(config.width / 2, 25, 'ladder').setScale(0.1)
-
         // Create player
         player = this.physics.add.sprite(config.width / 2, config.height - 32, "dude");
+    },
 
+    create: function () {
+        this.updateSrites()
         // Create animations for player
         this.anims.create({
             key: "up",
             frames: this.anims.generateFrameNumbers("dude", { start: 3, end: 3 })
         });
-
-        // Player should collide with edges of the screen
-        // player.setCollideWorldBounds(true);
-
         // Keyboard input
         cursors = this.input.keyboard.createCursorKeys();
     },
@@ -89,20 +85,10 @@ var gamePlay = new Phaser.Class({
 
     update: function () {
         // Update objects & variables
-        // reset
-        if (player.y <= 0) {
-            level += 1
-            const nextBgIdx = level % bgs.length
-            console.log('nextBgIdx', nextBgIdx)
-            const nextBgName = bgs[nextBgIdx]
-            // Create background
-            this.bg = this.add.image(config.width / 2, config.height / 2, nextBgName);
-            this.bg.setDisplaySize(config.width, config.height);
-            // ladder
-            this.add.image(config.width / 2, config.height - 150, 'ladder').setScale(0.1)
-            this.add.image(config.width / 2, 25, 'ladder').setScale(0.1)
-            // Create player
-            player = this.physics.add.sprite(config.width / 2, config.height - 32, "dude");
+        const scored = player.y <= 0
+        if (scored) {
+            level = level + 1 % bgs.length
+            this.updateSrites()
         }
         player.setVelocity(0, 0);
         if (cursors.up.isDown) {
@@ -121,8 +107,8 @@ const scaleDownSketch = !isMobile
 
 var config = {
     type: Phaser.AUTO,
-    width: scaleDownSketch ? window.innerWidth / 1.2: window.innerWidth,
-    height: scaleDownSketch ? window.innerHeight / 1.3: window.innerHeight,
+    width: scaleDownSketch ? window.innerWidth / 1.2 : window.innerWidth,
+    height: scaleDownSketch ? window.innerHeight / 1.3 : window.innerHeight,
     parent: 'main-canvas',
     pixelArt: true,
     physics: {
