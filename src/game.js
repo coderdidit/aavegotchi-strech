@@ -14,7 +14,6 @@ import winterBGPath from './vendor/assets/bg/winter.png'
 import successSoundPath from './vendor/assets/sounds/success.mp3'
 import popSoundPath from './vendor/assets/sounds/pop.mp4'
 
-let cursors = []
 let player
 const canvasParent = document.getElementById('main-canvas')
 
@@ -83,8 +82,6 @@ var gamePlay = new Phaser.Class({
             key: "up",
             frames: this.anims.generateFrameNumbers("dude", { start: 3, end: 3 })
         });
-        // Keyboard input
-        cursors = this.input.keyboard.createCursorKeys();
     },
 
     /*--- THE UPDATE FUNCTION: MAKE CHANGES TO THE GAME OVER TIME ---*/
@@ -99,7 +96,7 @@ var gamePlay = new Phaser.Class({
             successSound.play()
         }
         player.setVelocity(0, 0);
-        if (cursors.up.isDown) {
+        if (window.gameStateIsInMove()) {
             //  Move up
             player.setVelocityY(-200);
             player.anims.play("up");
