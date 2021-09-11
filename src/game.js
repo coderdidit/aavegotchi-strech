@@ -95,7 +95,7 @@ const setupGame = async () => {
             // Create player
             player = this.physics.add
                 .sprite(config.width / 2, config.height - 60, "gotchi")
-                .setScale(0.75)
+                .setScale(0.69)
         },
 
         create: function () {
