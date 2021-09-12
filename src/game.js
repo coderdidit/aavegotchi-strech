@@ -33,8 +33,10 @@ let gotchi
 const numericTraits = [1, 5, 99, 29, 6, 8] // at index 0 is hat
 const equippedWearables = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-const renderTraits = (svgDataUri) => {
+const renderTraits = (svgString) => {
     const aavegotchiPreview = document.getElementById('aavegotchi-preview')
+    const svgStrBase64 = window.btoa(svgString)
+    const svgDataUri = `data:image/svg+xml;base64,${svgStrBase64}`
     aavegotchiPreview.src = svgDataUri
     const gotchiTraitsDiv = document.getElementById('gotchi-traits')
     const numericTraitsNames = ['⚡️ Energy', '👹 Aggression', '👻 Spookiness', '🧠 Brain size']
@@ -47,9 +49,7 @@ const renderTraits = (svgDataUri) => {
 
 const setupPlayerSVG = async () => {
     const svgString = await moralis.getGotchiSVG(equippedWearables, numericTraits)
-    const svgStrBase64 = window.btoa(svgString)
-    const svgDataUri = `data:image/svg+xml;base64,${svgStrBase64}`
-    renderTraits(svgDataUri)
+    renderTraits(svgString)
     return svgString
 }
 
