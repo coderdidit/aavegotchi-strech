@@ -46,13 +46,21 @@ const renderTraits = (svgDataUri) => {
 }
 
 const setupPlayerSVG = async () => {
-    const svgDataUri = await moralis.getGotchiSVG(equippedWearables, numericTraits)
+    const svgString = await moralis.getGotchiSVG(equippedWearables, numericTraits)
+    const svgStrBase64 = window.btoa(svgString)
+    const svgDataUri = `data:image/svg+xml;base64,${svgStrBase64}`
     renderTraits(svgDataUri)
-    return svgDataUri
+    return svgString
+}
+
+const svgStringToURL = (svgString) => {
+    const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+    return URL.createObjectURL(blob);
 }
 
 const setupGame = async () => {
-    const svgDataUri = await setupPlayerSVG()
+    const svgString = await setupPlayerSVG()
+    const svgDataUrl = svgStringToURL(svgString)
 
     const gamePlay = new Phaser.Class({
         // Define scene
@@ -64,9 +72,10 @@ const setupGame = async () => {
         rePreviewGotchi: async function () {
             const hat = equippedWearables[0] + 1
             equippedWearables[0] = hat
-            const svgDataUri = await moralis.getGotchiSVG(equippedWearables, numericTraits)
+            const svgString = await moralis.getGotchiSVG(equippedWearables, numericTraits)
+            const svgDataUrl = svgStringToURL(svgString)
             this.textures.removeKey('gotchi')
-            this.load.svg('gotchi', svgDataUri)
+            this.load.svg('gotchi', svgDataUrl)
             this.load.start()
         },
 
@@ -82,7 +91,7 @@ const setupGame = async () => {
                 "ladder",
                 ladderPath
             );
-            this.load.svg('gotchi', svgDataUri)
+            this.load.svg('gotchi', svgDataUrl)
         },
 
         updateSrites: function () {
